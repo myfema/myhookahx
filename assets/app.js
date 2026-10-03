@@ -265,7 +265,7 @@ function initListPage() {
     const toggle = document.createElement('button');
     toggle.className = 'filters-toggle';
     toggle.type = 'button';
-    toggle.textContent = 'Фильтры';
+    toggle.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg><span>Фильтры</span>';
     toggle.addEventListener('click', () => sidebar.classList.toggle('side--open'));
     toolbar.prepend(toggle);
     const closeBtn = document.createElement('button');
@@ -594,7 +594,7 @@ function initCart() {
       });
       msg += `\n💰 *Итого: ${money(sum)}*`;
       
-      const url = `https://t.me/share/url?url=${encodeURIComponent(location.origin)}&text=${encodeURIComponent(msg)}`;
+      const url = `https://t.me/${TG.user.replace('@', '')}?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
       cart.clear();
       render();
@@ -607,6 +607,34 @@ function initCart() {
 function updateCartCount() {
   const el = document.querySelector('.cart-btn__count');
   if (el) el.textContent = cart.get().count;
+  const m = document.querySelector('.mnav__count');
+  if (m) {
+    const c = cart.get().count;
+    m.textContent = c;
+    m.style.display = c ? 'grid' : 'none';
+  }
+}
+
+/* ============================== MOBILE NAV ============================== */
+function initMobileNav() {
+  const page = document.body.dataset.page;
+  const mnav = document.createElement('nav');
+  mnav.className = 'mnav';
+  mnav.innerHTML = `
+    <a class="mnav__link ${page === 'catalog' ? 'is-active' : ''}" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+      <span>Каталог</span>
+    </a>
+    <a class="mnav__link ${page === 'brand' || page === 'brands' ? 'is-active' : ''}" href="brands.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24H4a1 1 0 0 0-1 1v5.59c0 .53.21 1.04.59 1.41l9.58 9.59a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"></path><circle cx="7.5" cy="7.5" r="1.5"></circle></svg>
+      <span>Бренды</span>
+    </a>
+    <a class="mnav__link ${page === 'cart' ? 'is-active' : ''}" href="cart.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      <span>Корзина</span>
+      <span class="mnav__count"></span>
+    </a>`;
+  document.body.appendChild(mnav);
 }
 
 /* ============================== BRANDS ============================== */
@@ -643,3 +671,5 @@ document.body.insertAdjacentHTML('afterbegin', headerHTML());
 document.body.insertAdjacentHTML('beforeend', footerHTML());
 wireGlobal();
 ({ catalog: initListPage, brand: initListPage, brands: initBrands, product: initProduct, cart: initCart }[document.body.dataset.page] ?? function () {})();
+initMobileNav();
+updateCartCount();

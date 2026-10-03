@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Бренд — Hookah X Catalog</title>
+<meta name="description" content="Товары бренда: выбор граммовки, линейки и цены.">
+<link rel="stylesheet" href="assets/styles.css">
+<meta name="theme-color" content="#0b0d12">
+<link rel="icon" href="assets/logo1.png">
+</head>
+<body data-page="brand">
+<div id="app">
+  <div class="wrap">
+    <div id="brand-hero"></div>
+    <div class="layout">
+      <aside class="side" id="sidebar"></aside>
+      <main>
+        <div class="toolbar">
+          <div class="toolbar__count" id="count"></div>
+          <select class="select" id="sort">
+            <option value="popular">По популярности</option>
+            <option value="cheap">Сначала дешёвые</option>
+            <option value="expensive">Сначала дорогие</option>
+            <option value="name">По названию</option>
+          </select>
+        </div>
+        <div id="grams"></div>
+        <div class="grid" id="grid"></div>
+        <div id="pagination"></div>
+      </main>
+    </div>
+  </div>
+</div>
+<script src="data/catalog.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

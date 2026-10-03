@@ -260,6 +260,23 @@ function initListPage() {
     }
   }
 
+  const toolbar = document.querySelector('.toolbar');
+  if (sidebar && toolbar && !sidebar.querySelector('.side__close')) {
+    const toggle = document.createElement('button');
+    toggle.className = 'filters-toggle';
+    toggle.type = 'button';
+    toggle.textContent = 'Фильтры';
+    toggle.addEventListener('click', () => sidebar.classList.toggle('side--open'));
+    toolbar.prepend(toggle);
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'side__close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Закрыть фильтры');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', () => sidebar.classList.remove('side--open'));
+    sidebar.prepend(closeBtn);
+  }
+
   const heroEl = document.getElementById('brand-hero');
   if (heroEl && isBrandPage && state.brand) {
     const bimg = brandProducts.find((p) => p.manufacturerImage) || null;
@@ -453,6 +470,7 @@ function initListPage() {
       state.page = 1;
       syncSidebar();
       render();
+      if (window.innerWidth <= 860) sidebar.classList.remove('side--open');
     });
   } else if (sidebar && isBrandPage) {
     sidebar.addEventListener('click', (e) => {
@@ -462,6 +480,7 @@ function initListPage() {
       state.page = 1;
       syncSidebar();
       render();
+      if (window.innerWidth <= 860) sidebar.classList.remove('side--open');
     });
   }
 
